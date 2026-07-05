@@ -56,7 +56,9 @@ public class SecurityConfig {
         configuration.setAllowedOriginPatterns(
                 List.of(
                         "http://localhost:*",
-                        "http://127.0.0.1:*"));
+                        "http://127.0.0.1:*",
+                        "https://nexushr-ai-enabled-enterprise-hr-9whf.onrender.com/login"
+                ));
 
         configuration.setAllowedMethods(
                 List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD"));
