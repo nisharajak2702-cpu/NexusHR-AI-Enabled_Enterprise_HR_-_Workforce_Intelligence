@@ -1,0 +1,105 @@
+NexusHR Project Handover Document
+
+Project Overview
+
+NexusHR is a Spring Boot + PostgreSQL + JWT based Human Resource
+Management System (HRMS) with a React (Vite) frontend.
+
+Backend
+
+-   Spring Boot 3.5.x
+-   Java 21
+-   PostgreSQL
+-   Spring Security + JWT
+-   JPA/Hibernate
+-   Swagger
+-   OpenPDF (Payslips)
+-   Excel Export
+-   Audit Logging
+
+Frontend
+
+-   React (Vite)
+-   React Router
+-   Axios
+-   Material UI
+-   JWT Authentication
+
+Completed Backend
+
+-   Authentication (JWT + BCrypt)
+-   Role-Based Authorization
+-   Employee Module
+-   Department Module
+-   Attendance Module
+-   Leave Module
+-   Payroll + PDF Payslip
+-   Performance Module
+-   Company Module
+-   Dashboard APIs
+-   Search + Pagination + Sorting
+-   Excel Reports
+-   Audit Logging
+-   Swagger
+-   Validation + Global Exception Handler
+-   AI Workforce Insights (backend foundation)
+-   Employee Document Management
+-   Notification backend
+
+Database
+
+Core tables: users, employee, department, attendance, leave_request
+
+Additional implemented tables: payroll, company, performance,
+employee_document, audit_log and related module tables.
+
+Completed Frontend
+
+-   React project setup
+-   Folder structure
+-   Axios configuration
+-   AuthContext
+-   Protected Routes
+-   Login page
+-   Dashboard page
+-   Sidebar
+-   Topbar
+-   Main Layout
+-   Employee service
+-   Initial Employee DataGrid
+-   Search
+-   Pagination
+-   Sorting
+-   Excel export button
+
+Remaining Frontend
+
+1.  Employee Add/Edit/Delete dialogs
+2.  Department CRUD UI
+3.  Attendance UI
+4.  Leave UI
+5.  Payroll UI
+6.  Performance UI
+7.  Company UI
+8.  Document Management UI
+9.  Notification UI
+10. AI Insights UI
+11. Dashboard charts
+12. Role-based menu rendering
+13. Responsive improvements
+14. Final testing & deployment
+
+Important Notes
+
+-   Backend login works and returns token, username, role, message.
+-   React runs on http://localhost:5173
+-   Backend runs on http://localhost:8080
+-   JWT must be sent as Authorization: Bearer .
+-   CORS must be enabled for localhost:5173.
+
+Estimated Progress
+
+Backend: ~95-98% Frontend: Foundation complete Overall project: ~75-80%
+
+This document summarizes the project status so another developer can
+continue from the current state.

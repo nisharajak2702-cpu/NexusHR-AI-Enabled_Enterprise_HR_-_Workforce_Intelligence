@@ -1,0 +1,56 @@
+services:
+
+  backend:
+
+    build:
+      context: ./nexushr
+
+    container_name: nexushr-backend
+
+    restart: unless-stopped
+
+    env_file:
+      - .env
+
+    environment:
+      SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL:-jdbc:postgresql://host.docker.internal:5432/${POSTGRES_DB}}
+      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+      APP_JWT_SECRET: ${JWT_SECRET}
+
+    ports:
+      - "${SPRING_PORT}:8080"
+
+    healthcheck:
+      test: ["CMD", "sh", "-c", "exec 3<>/dev/tcp/localhost/8080 && echo 'OK' >&3 && exec 3<&- && exec 3>&-"]
+      interval: 10s
+      timeout: 10s
+      retries: 15
+      start_period: 30s
+
+    networks:
+      - nexushr-network
+
+  frontend:
+
+    build:
+      context: ./nexushr-frontend
+
+    container_name: nexushr-frontend
+
+    restart: unless-stopped
+
+    depends_on:
+      - backend
+
+    ports:
+      - "${REACT_PORT}:80"
+
+    networks:
+      - nexushr-network
+
+volumes:
+  postgres_data:
+
+networks:
+  nexushr-network:

@@ -1,0 +1,173 @@
+package com.nexushr.nexushr.serviceImpl;
+
+import org.springframework.stereotype.Service;
+
+import com.nexushr.nexushr.entity.Company;
+import com.nexushr.nexushr.entity.Payroll;
+import com.nexushr.nexushr.repository.CompanyRepository;
+import com.nexushr.nexushr.repository.PayrollRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.nexushr.nexushr.service.PayrollPdfService;
+
+import com.lowagie.text.Document;
+import com.lowagie.text.DocumentException;
+import com.lowagie.text.Paragraph;
+import com.lowagie.text.pdf.PdfWriter;
+import java.io.ByteArrayOutputStream;
+
+@Service
+public class PayrollPdfServiceImpl implements PayrollPdfService {
+
+	@Autowired
+	private PayrollRepository payrollRepository;
+
+	@Autowired
+	private CompanyRepository companyRepository;
+	
+    @Override
+    public byte[] generatePayslip(Long payrollId) {
+
+    	@SuppressWarnings("unused")
+		Payroll payroll =
+    	        payrollRepository.findById(payrollId)
+    	                .orElseThrow(() ->
+    	                        new RuntimeException("Payroll not found"));
+
+    	@SuppressWarnings("unused")
+		Company company =
+    	        companyRepository.findAll()
+    	                .stream()
+    	                .findFirst()
+    	                .orElseThrow(() ->
+    	                        new RuntimeException("Company details not found"));
+    	try {
+
+    	    ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+    	    Document document = new Document();
+
+    	    PdfWriter.getInstance(document, out);
+
+    	    document.open();
+
+    	    document.add(new Paragraph(company.getCompanyName()));
+
+    	    document.add(new Paragraph(company.getAddress()));
+
+    	    document.add(new Paragraph(company.getPhone()));
+
+    	    document.add(new Paragraph(company.getEmail()));
+
+    	    document.add(new Paragraph(" "));
+
+    	    document.add(new Paragraph("=============================="));
+
+    	    document.add(new Paragraph("EMPLOYEE DETAILS"));
+
+    	    document.add(new Paragraph("=============================="));
+
+    	    document.add(new Paragraph(
+    	            "Employee : "
+    	                    + payroll.getEmployee().getFirstName()
+    	                    + " "
+    	                    + payroll.getEmployee().getLastName()));
+
+    	    document.add(new Paragraph(
+    	            "Department : "
+    	                    + payroll.getEmployee().getDepartment().getName()));
+
+    	    document.add(new Paragraph(
+    	            "Designation : "
+    	                    + payroll.getEmployee().getPosition()));
+
+    	    document.add(new Paragraph(
+    	            "Month : "
+    	                    + payroll.getMonth()
+    	                    + " "
+    	                    + payroll.getYear()));
+    	    
+    	    document.add(new Paragraph(" "));
+
+    	    document.add(new Paragraph("=============================="));
+
+    	    document.add(new Paragraph("EARNINGS"));
+
+    	    document.add(new Paragraph("=============================="));
+
+    	    document.add(new Paragraph("Basic Salary : ₹ " + payroll.getBasicSalary()));
+
+    	    document.add(new Paragraph("HRA : ₹ " + payroll.getHra()));
+
+    	    document.add(new Paragraph("DA : ₹ " + payroll.getDa()));
+
+    	    document.add(new Paragraph("Bonus : ₹ " + payroll.getBonus()));
+
+    	    document.add(new Paragraph("Overtime : ₹ " + payroll.getOvertimeAmount()));
+
+    	    document.add(new Paragraph("Gross Salary : ₹ " + payroll.getGrossSalary()));
+    	    
+    	    
+    	    document.add(new Paragraph(" "));
+
+    	    document.add(new Paragraph("=============================="));
+
+    	    document.add(new Paragraph("DEDUCTIONS"));
+
+    	    document.add(new Paragraph("=============================="));
+
+    	    document.add(new Paragraph("PF : ₹ " + payroll.getPf()));
+
+    	    document.add(new Paragraph("ESI : ₹ " + payroll.getEsi()));
+
+    	    document.add(new Paragraph("Professional Tax : ₹ " + payroll.getProfessionalTax()));
+
+    	    document.add(new Paragraph("Income Tax : ₹ " + payroll.getIncomeTax()));
+
+    	    document.add(new Paragraph("Leave Deduction : ₹ " + payroll.getLeaveDeduction()));
+
+    	    document.add(new Paragraph("Other Deduction : ₹ " + payroll.getDeduction()));
+    	    
+    	    
+    	    document.add(new Paragraph(" "));
+
+    	    document.add(new Paragraph("=============================="));
+
+    	    document.add(new Paragraph("SUMMARY"));
+
+    	    document.add(new Paragraph("=============================="));
+
+    	    document.add(new Paragraph("Net Salary : ₹ " + payroll.getNetSalary()));
+
+    	    document.add(new Paragraph("Payment Status : " + payroll.getPaymentStatus()));
+
+    	    document.add(new Paragraph("Payment Mode : " + payroll.getPaymentMode()));
+
+    	    document.add(new Paragraph("Payslip No : " + payroll.getPayslipNumber()));
+
+    	    document.add(new Paragraph("Generated By : " + payroll.getGeneratedBy()));
+
+    	    document.add(new Paragraph("Generated Date : " + payroll.getGeneratedDate()));
+    	    
+    	    
+    	    document.add(new Paragraph(" "));
+
+    	    document.add(new Paragraph("-------------------------------------------"));
+
+    	    document.add(new Paragraph("This is a system generated payslip."));
+
+    	    document.add(new Paragraph("No signature required."));
+    	    
+    	    
+    	    document.close();
+
+    	    return out.toByteArray();
+
+    	} catch (DocumentException e) {
+
+    	    throw new RuntimeException("Error generating PDF", e);
+
+    	}
+    }
+
+}
