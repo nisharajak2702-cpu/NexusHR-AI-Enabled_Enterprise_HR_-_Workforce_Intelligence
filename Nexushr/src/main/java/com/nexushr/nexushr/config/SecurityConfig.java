@@ -57,7 +57,7 @@ public class SecurityConfig {
                 List.of(
                         "http://localhost:*",
                         "http://127.0.0.1:*",
-                        "https://nexushr-ai-enabled-enterprise-hr-9whf.onrender.com/login"
+                        "https://nexushr-ai-enabled-enterprise-hr-9whf.onrender.com"
                 ));
 
         configuration.setAllowedMethods(
